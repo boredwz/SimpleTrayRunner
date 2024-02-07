@@ -16,7 +16,7 @@ This helps in cases, for example, when you need to close some applications to sa
 
 ### Usage
 
-1. Download **`SimpleTrayRunner.exe`**
+1. Download [**`SimpleTrayRunner.exe`**](https://github.com/wvzxn/SimpleTrayRunner/releases/latest/download/SimpleTrayRunner.exe)
 2. Choose the file you want to be executed
 3. Check other options you need in the **`Settings`**
 4. Enjoy!
