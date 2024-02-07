@@ -81,14 +81,13 @@ namespace SimpleTrayRunner
         public static void Job(string ItemPath)
         {
             if (!File.Exists(ItemPath)) { return; }
-            if (Path.GetExtension(ItemPath) == ".ps1")
+            bool isPS1 = Path.GetExtension(ItemPath) == ".ps1";
+            Process.Start(new ProcessStartInfo
             {
-                Process.Start(new ProcessStartInfo("powershell.exe", $"-EP bypass -f \"{ItemPath}\""));
-            }
-            else
-            {
-                Process.Start(ItemPath);
-            }
+                FileName = isPS1 ? "powershell.exe" : ItemPath,
+                Arguments = isPS1 ? $"-ep bypass -f \"{ItemPath}\"" : "",
+                WorkingDirectory = Path.GetDirectoryName(ItemPath),
+            });
         }
     }
 
