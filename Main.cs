@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace SimpleTrayRunner
 {
-    class Settings
+    static class Settings
     {
         public static string Name = "SimpleTrayRunner";
         public static string Ini = Name + ".ini";
@@ -19,7 +19,7 @@ namespace SimpleTrayRunner
         public static string RunAtPowerPath = @"C:\Example\runAtPowerChange.exe";
     }
 
-    class Main
+    static class Main
     {
         public static void Log(string text)
         {
@@ -91,7 +91,7 @@ namespace SimpleTrayRunner
         }
     }
 
-    class PowerMode
+    static class PowerMode
     {
         public static void TriggerEnable() => Microsoft.Win32.SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
         public static void TriggerDisable() => Microsoft.Win32.SystemEvents.PowerModeChanged -= SystemEvents_PowerModeChanged;
@@ -101,7 +101,7 @@ namespace SimpleTrayRunner
             if (e.Mode == Microsoft.Win32.PowerModes.StatusChange)
             {
                 Main.Log($"(Event) PowerModes.StatusChange: '{Settings.RunAtPowerPath}'");
-                Main.Job(Settings.RunAtPowerPath);
+                if (Settings.Enabled) { Main.Job(Settings.RunAtPowerPath); }
             }
             else { Main.Log("(Event) PowerModes.Resume/Suspend: ~"); }
         }

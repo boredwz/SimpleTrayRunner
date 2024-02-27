@@ -29,10 +29,10 @@ namespace SimpleTrayRunner
             Main.Log("(App) Start");
 
             // Home Toggle: change status, color + log
-            HomeToggle_Change(false, Settings.Enabled);
+            Home_Set(Settings.Enabled);
 
             // (Event) Startup
-            if (Settings.RunAtStart)
+            if (Settings.RunAtStart && Settings.Enabled)
             {
                 Main.Log($"(Event) Startup: '{Settings.RunAtStartPath}'");
                 Main.Job(Settings.RunAtStartPath);
@@ -88,25 +88,25 @@ namespace SimpleTrayRunner
 
 
         //  [HOME]
-        private void HomeToggle_Click(object sender, EventArgs e) => HomeToggle_Change();
-        private void HomeToggle_Change(bool Toggle = true, bool Status = false)
+        private void HomeToggle_Click(object sender, EventArgs e) => Home_Toggle();
+        private void Home_Toggle() => Home_Set(!Settings.Enabled, true);
+        private void Home_Set(bool enable, bool toggle = false)
         {
-            if (Toggle) { Status = !Settings.Enabled; }
-            Settings.Enabled = Status;
-            string st = Status ? "Enabled" : "Disabled";
-            HomeStatus.Text = $"Status: {st}";
-            HomeToggle.BackColor = Status ? System.Drawing.Color.PaleGreen : System.Drawing.Color.Transparent;
-            Main.Log($"(Status) {st}");
+            Settings.Enabled = enable;
+            string status = Settings.Enabled ? "Enabled" : "Disabled";
+            HomeToggle.BackColor = Settings.Enabled ? System.Drawing.Color.PaleGreen : System.Drawing.Color.Transparent;
+            HomeStatus.Text = $"Status: {status}";
+            Main.Log($"(Status) {status}");
 
             // PowerMode trigger (Enable/Disable)
-            if (Settings.RunAtPower)
+            if (Settings.RunAtPower && Settings.Enabled)
             {
                 if (Settings.Enabled) { PowerMode.TriggerEnable(); }
                 else { PowerMode.TriggerDisable(); }
             }
 
             // If Home Toggle button pressed
-            if (Toggle)
+            if (toggle)
             {
                 Main.Log("(INI) Home button, saving settings..");
                 Main.WriteIni(Settings.Ini);
