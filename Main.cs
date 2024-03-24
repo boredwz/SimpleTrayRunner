@@ -100,6 +100,11 @@ namespace SimpleTrayRunner
         {
             if (e.Mode == Microsoft.Win32.PowerModes.StatusChange)
             {
+                if (SystemInformation.PowerStatus.BatteryLifePercent == 1.0)
+                {
+                    Main.Log("(Event) PowerModes.StatusChange: 99~100%");
+                    return;
+                }
                 Main.Log($"(Event) PowerModes.StatusChange: '{Settings.RunAtPowerPath}'");
                 if (Settings.Enabled) { Main.Job(Settings.RunAtPowerPath); }
             }
